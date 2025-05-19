@@ -10,16 +10,16 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var restaurants: [Restaurant]
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(items) { item in
+                ForEach(restaurants) { eachRestaurant in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        RestaurantDetailView(restaurant: eachRestaurant)
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text(eachRestaurant.name)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -39,7 +39,7 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = Restaurant()
             modelContext.insert(newItem)
         }
     }
@@ -47,7 +47,7 @@ struct ContentView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(items[index])
+                modelContext.delete(restaurants[index])
             }
         }
     }
@@ -55,5 +55,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Restaurant.self, inMemory: true)
 }
