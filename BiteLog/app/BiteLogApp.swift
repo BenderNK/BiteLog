@@ -12,7 +12,8 @@ import SwiftData
 struct BiteLogApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Restaurant.self,
+            Dish.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +26,7 @@ struct BiteLogApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RestaurantListView()
         }
         .modelContainer(sharedModelContainer)
     }
