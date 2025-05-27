@@ -17,7 +17,7 @@ struct RestaurantListView: View {
             List {
                 ForEach(restaurants) { eachRestaurant in
                     NavigationLink {
-                        Text("Hello World")
+                        RestaurantDetailView(restaurant: eachRestaurant)
                     } label: {
                         Text(eachRestaurant.name)
                     }
