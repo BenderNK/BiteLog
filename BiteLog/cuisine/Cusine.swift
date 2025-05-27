@@ -4,8 +4,9 @@
 //
 //  Created by Nessa Kucuk, Turker on 5/18/25.
 //
+import Observation
 
-enum Cuisine: String, CaseIterable {
+enum Cuisine: String, CaseIterable, Identifiable {
     case american = "American"
     case italian = "Italian"
     case mexican = "Mexican"
@@ -74,4 +75,8 @@ enum Cuisine: String, CaseIterable {
     case iceCream = "Ice Cream"
     case dessert = "Dessert"
     case foodTruck = "Food Truck"
+    
+    var id: String {
+        return rawValue
+    }
 }
