@@ -19,6 +19,7 @@ final class Restaurant {
     var zipCode: String
     var rating: Int
     var cuisine: String
+    var modifiedDate: Date
     var dishes: [Dish]
     
     init(name: String = "") {
@@ -32,5 +33,6 @@ final class Restaurant {
         self.state = ""
         self.zipCode = ""
         self.dishes = []
+        self.modifiedDate = Date()
     }
 }
