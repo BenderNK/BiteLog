@@ -10,7 +10,7 @@ import SwiftData
 
 struct RestaurantListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var restaurants: [Restaurant]
+    @Query(sort: \Restaurant.modifiedDate, order: .reverse) private var restaurants: [Restaurant]
 
     var body: some View {
         NavigationStack {
