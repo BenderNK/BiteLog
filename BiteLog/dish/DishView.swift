@@ -119,7 +119,7 @@ struct DishView: View {
                         .padding()
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            showBottomSheet = false
+                            cameraButtonClicked = true
                         }
 
                     Divider()
@@ -144,6 +144,15 @@ struct DishView: View {
                })
            }
        }
+       .onChange(of: selectedImage) { oldValue, newValue in
+           if let validPicture = newValue {
+              // user picked photos
+              showBottomSheet = false
+              Task(priority: .high, operation: {
+                  await loadImage(fromCamera: validPicture)
+              })
+           }
+       }
     }
     
     private func loadImages(from items: [PhotosPickerItem]) async {
@@ -157,6 +166,12 @@ struct DishView: View {
             }
         } catch {
             print("Error loading images: \(error.localizedDescription)")
+        }
+    }
+    
+    private func loadImage(fromCamera item: UIImage) async {
+        if let imageData = item.jpegData(compressionQuality: 100) {
+            dish.images.append(imageData)
         }
     }
 }

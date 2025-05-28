@@ -16,8 +16,7 @@ struct RestaurantDetailView: View {
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
-        ZStack {
-            Form {
+        Form {
                 Section(header: Text("Restaurant info")) {
                     TextField("Name", text: $restaurant.name)
                         .font(.body)
@@ -109,7 +108,7 @@ struct RestaurantDetailView: View {
                     })
                 })
             }
-            
+        .background {
             // Transparent overlay for keyboard dismissal
             if isTextFieldFocused {
                 Color.clear
