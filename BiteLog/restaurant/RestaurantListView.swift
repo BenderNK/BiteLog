@@ -34,7 +34,11 @@ struct RestaurantListView: View {
                     }
                 }
             }
+            
+            .navigationTitle("Restaurants")
+            .navigationBarTitleDisplayMode(.large)
         }
+        
     }
 
     private func addItem() {

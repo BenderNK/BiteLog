@@ -19,16 +19,19 @@ struct RestaurantDetailView: View {
         Form {
                 Section(header: Text("Restaurant info")) {
                     TextField("Name", text: $restaurant.name)
+                        .textInputAutocapitalization(.words)
                         .font(.body)
                         .autocorrectionDisabled(true)
                         .textInputAutocapitalization(.words)
                         .focused($isTextFieldFocused)
                     
                     TextField("Address", text: $restaurant.street1, axis: .vertical)
+                        .textInputAutocapitalization(.words)
                         .font(.body)
                         .focused($isTextFieldFocused)
                     
                     TextField("Address", text: $restaurant.street2, axis: .vertical)
+                        .textInputAutocapitalization(.words)
                         .font(.body)
                         .focused($isTextFieldFocused)
                     
@@ -36,12 +39,14 @@ struct RestaurantDetailView: View {
                         HStack(spacing: 4, content: {
                             TextField("City", text: $restaurant.city)
                                 .font(.body)
+                                .textInputAutocapitalization(.words)
                                 .focused($isTextFieldFocused)
                                 .frame(width: metrics.size.width * 0.50)
                                 
                             Divider()
                             
                             TextField("State", text: $restaurant.state)
+                                .textInputAutocapitalization(.characters)
                                 .font(.body)
                                 .focused($isTextFieldFocused)
                                 .frame(width: metrics.size.width * 0.20)
@@ -49,6 +54,7 @@ struct RestaurantDetailView: View {
                             Divider()
                             
                             TextField("Zipcode", text: $restaurant.zipCode)
+                                .keyboardType(.numberPad)
                                 .font(.body)
                                 .focused($isTextFieldFocused)
                         })
