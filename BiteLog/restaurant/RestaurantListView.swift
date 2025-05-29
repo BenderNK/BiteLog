@@ -10,14 +10,14 @@ import SwiftData
 
 struct RestaurantListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var restaurants: [Restaurant]
+    @Query(sort: \Restaurant.modifiedDate, order: .reverse) private var restaurants: [Restaurant]
 
     var body: some View {
         NavigationStack {
             List {
                 ForEach(restaurants) { eachRestaurant in
                     NavigationLink {
-                        Text("Hello World")
+                        RestaurantDetailView(restaurant: eachRestaurant)
                     } label: {
                         Text(eachRestaurant.name)
                     }
@@ -34,7 +34,11 @@ struct RestaurantListView: View {
                     }
                 }
             }
+            
+            .navigationTitle("Restaurants")
+            .navigationBarTitleDisplayMode(.large)
         }
+        
     }
 
     private func addItem() {
