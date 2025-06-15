@@ -10,14 +10,14 @@ import SwiftData
 
 struct RestaurantListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var restaurants: [Restaurant]
+    @Query(sort: \Restaurant.modifiedDate, order: .reverse) private var restaurants: [Restaurant]
 
     var body: some View {
         NavigationStack {
             List {
                 ForEach(restaurants) { eachRestaurant in
                     NavigationLink {
-                        Text("Hello World")
+                        RestaurantDetailView(restaurant: eachRestaurant)
                     } label: {
                         Text(eachRestaurant.name)
                     }
@@ -33,14 +33,32 @@ struct RestaurantListView: View {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
+                
+//                ToolbarItem(placement: .bottomBar) {
+//                    Button(action: generateRestaurants) {
+//                        Label("Add Item", systemImage: "pencil")
+//                    }
+//                }
             }
+            
+            .navigationTitle("Restaurants")
+            .navigationBarTitleDisplayMode(.large)
         }
+        
     }
 
     private func addItem() {
         withAnimation {
             let newItem = Restaurant(name: "New")
             modelContext.insert(newItem)
+        }
+    }
+    
+    private func generateRestaurants() {
+        let mockData = MockData()
+        let mockRestaurants = mockData.generateMockRestaurants()
+        mockRestaurants.forEach { eachRestaurant in
+            modelContext.insert(eachRestaurant)
         }
     }
 
