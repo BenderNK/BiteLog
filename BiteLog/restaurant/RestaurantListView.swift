@@ -33,6 +33,12 @@ struct RestaurantListView: View {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
+                
+//                ToolbarItem(placement: .bottomBar) {
+//                    Button(action: generateRestaurants) {
+//                        Label("Add Item", systemImage: "pencil")
+//                    }
+//                }
             }
             
             .navigationTitle("Restaurants")
@@ -45,6 +51,14 @@ struct RestaurantListView: View {
         withAnimation {
             let newItem = Restaurant(name: "New")
             modelContext.insert(newItem)
+        }
+    }
+    
+    private func generateRestaurants() {
+        let mockData = MockData()
+        let mockRestaurants = mockData.generateMockRestaurants()
+        mockRestaurants.forEach { eachRestaurant in
+            modelContext.insert(eachRestaurant)
         }
     }
 

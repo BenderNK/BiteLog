@@ -9,29 +9,59 @@ import SwiftUI
 
 struct CuisineView: View {
     @Bindable var cuisineSelection: CuisineSelection
+    @State var searchQuery: String = ""
     
     var body: some View {
         List {
-            ForEach(Cuisine.allCases) { eachCuisine in
-                HStack {
-                    Text(eachCuisine.rawValue)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    if eachCuisine == cuisineSelection.selectedCuisine {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(.accentColor)
+            Section(content: {
+                ForEach(Cuisine.allCases) { eachCuisine in
+                    if searchQuery.isEmpty {
+                        listItem(with: eachCuisine)
+                    } else {
+                        if eachCuisine.rawValue.contains(searchQuery) {
+                            listItem(with: eachCuisine)
+                        }
                     }
                 }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    cuisineSelection.selectedCuisine = eachCuisine
-                }
+            }, header: {
+                SearchBar(placeholder: "Search", searchText: $searchQuery)
+            })
+        }
+        .listStyle(.plain)
+        .navigationTitle("Cuisines")
+        .navigationBarTitleDisplayMode(.inline)
+        .modifier(KeyboardToolbar())
+    }
+    
+    @MainActor
+    private func listItem(with cuisine: Cuisine) -> some View {
+        HStack {
+            Text(cuisine.rawValue)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            if cuisine == cuisineSelection.selectedCuisine {
+                Image(systemName: "checkmark")
+                    .foregroundColor(.accentColor)
             }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            cuisineSelection.selectedCuisine = cuisine
         }
     }
 }
 
 #Preview {
     @Previewable @State var cuisineBinding: String = "Japanese"
+    @Previewable @State var searchText = "rea"
+    
     var selectedCuisine = CuisineSelection($cuisineBinding)
-    return CuisineView(cuisineSelection: selectedCuisine)
+    let cuisineView = CuisineView(
+        cuisineSelection: selectedCuisine
+    )
+    
+    cuisineView.searchQuery = searchText
+    
+    return NavigationStack {
+        cuisineView
+    }
 }

@@ -10,9 +10,9 @@ import SwiftUI
 
 @Observable
 class CuisineSelection {
-    var selectedCuisine: Cuisine {
-        get { Cuisine(rawValue: cuisineBinding.wrappedValue) ?? .italian } // Default case
-        set { cuisineBinding.wrappedValue = newValue.rawValue }
+    var selectedCuisine: Cuisine? {
+        get { Cuisine(rawValue: cuisineBinding.wrappedValue) }
+        set { cuisineBinding.wrappedValue = newValue?.rawValue ?? "" }
     }
     
     private let cuisineBinding: Binding<String>

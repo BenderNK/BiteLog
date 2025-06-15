@@ -27,6 +27,7 @@ struct DishView: View {
                 
                 TextField("Price", value: $dish.price, format: .currency(code: "USD"))
                     .font(.body)
+                    .keyboardType(.decimalPad)
                     .focused($isTextFieldFocused)
             }
             
@@ -66,8 +67,9 @@ struct DishView: View {
             
             Section {
                 Button("Add Picture", systemImage: "plus", action: {
-                    isTextFieldFocused = false
+                    //isTextFieldFocused = false
                     showBottomSheet = true
+                    print("user is clicking on add picture button")
                 })
                 
                 ForEach(0..<dish.images.count, id: \.self) { index in
@@ -78,8 +80,10 @@ struct DishView: View {
                         .clipped()
                 }
             }
-            
         }
+        .modifier(KeyboardToolbar())
+        
+        /*
         .scrollContentBackground(.hidden)
         .background {
             // 2. Recreate the default form appearance
@@ -92,6 +96,8 @@ struct DishView: View {
                     }
                 }
         }
+        */
+        
         .scrollDismissesKeyboard(.interactively) // Allows dismissing via scroll drag
         .navigationTitle(dish.name)
         .navigationBarTitleDisplayMode(.inline)
@@ -161,7 +167,13 @@ struct DishView: View {
         do {
             for item in items {
                 if let imageData = try await item.loadTransferable(type: Data.self) {
-                    dish.images.append(imageData)
+                    if let compressedImage = UIImage(data: imageData)?.jpegData(compressionQuality: 0.8) {
+                        dish.images.append(compressedImage)
+                    } else {
+                        print("Image cannot be converted uiimage or compressed")
+                    }
+                } else {
+                    print("Image cannot be represented as Data")
                 }
             }
         } catch {
@@ -170,8 +182,8 @@ struct DishView: View {
     }
     
     private func loadImage(fromCamera item: UIImage) async {
-        if let imageData = item.jpegData(compressionQuality: 100) {
-            dish.images.append(imageData)
+        if let compressedImage = item.jpegData(compressionQuality: 0.8) {
+            dish.images.append(compressedImage)
         }
     }
 }
